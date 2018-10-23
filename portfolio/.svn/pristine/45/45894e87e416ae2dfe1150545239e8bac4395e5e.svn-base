@@ -1,0 +1,15 @@
+﻿1차 포드폴리오 프로젝트
+
+DB: mwb복사해서 db명 변경 후 foward . ♨
+사용자명/암호 - 마음대로ㅁ  ♨
+
+
+ ------------프로젝트 이름 : ㅁ ♨---------------
+ 
+1. servlet name : spring-web 
+2. root context configuration xml : applicationContext.xml
+3. log path : ㅁ
+4. 첨부파일 path : ㅁ
+5. base package: com.(hsc).pf
+6. jsp vase location : /WEB-INF/views/
+7. MAVEN적용 (dependency.. spring_06 기준)

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hsc.pf.dao.BoardAttachDao">
+	<insert id="insert" parameterType="java.util.HashMap">
+		INSERT INTO board_attach(board_seq ,board_type_seq , filename, fake_filename, file_size, file_type, save_loc, create_date)
+		VALUES  (#{boardSeq}, #{typeSeq} ,#{filename},#{fakeFilename},#{fileSize}, 'file' ,'a', NOW() )
+	</insert>
+	
+	<select id="fileSelect" parameterType="int" resultType="map">
+		select * FROM board_attach WHERE board_seq =#{0}  and board_type_seq = #{1}
+	</select>
+
+	<select id="getAttach" parameterType="int" resultType="map">
+		select * FROM board_attach WHERE file_idx = #{0}
+	</select>
+	
+	<delete id="deleteAttach" parameterType="int">
+		delete from board_attach WHERE file_idx = #{0}
+	</delete>
+	
+	<delete id="del" parameterType="int">
+		delete from board_attach Where board_type_seq=#{0} and board_seq=#{1}
+	</delete>
+	
+	<select id="fileInfo" parameterType="java.util.HashMap" resultType="map">
+		SELECT * FROM board_attach
+	</select>
+	
+	<update id="updateLinkedInfo" parameterType="int">
+		update board_attach 
+		set linked = 1 
+		WHERE file_idx = #{0}
+	</update>
+	
+	
+		<update id="updateLinkedInfos" parameterType="list">
+		update board_attach 
+		set linked = 1
+		WHERE file_idx IN
+			<foreach collection="list" item="fileIdx" open="(" close=")" separator=",">
+				#{fileIdx}
+		</foreach>
+	</update>
+	
+	
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.hsc.pf.dao.NoticeDao">
+	<insert id="writing" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="boardSeq">
+	
+		INSERT INTO board (type_seq,member_id,member_idx, member_nick, title, content, create_date ,has_file)
+		VALUES (#{typeSeq}, #{memberId},0,#{memberNick}, #{title}, #{contents}, NOW() , #{hasFile})
+
+	</insert>
+
+	<select id="listNotice" parameterType="Map" resultType="HashMap">
+		SELECT * FROM board
+		WHERE type_seq = '1'
+
+		<if test="searchType != null and searchType == 2">
+			AND title LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+
+		<if test="searchType != null and searchType == 3">
+			AND content LIKE CONCAT('%', #{searchText}, '%')
+		</if>
+
+		<if test="searchType != null and searchType == 1">
+			AND (title LIKE CONCAT('%', #{searchText} , '%') OR content LIKE
+			CONCAT('%', #{searchText}, '%'))
+		</if>
+
+		ORDER BY board_seq DESC
+		LIMIT ${startIdx} , ${pageArticleSize}
+
+	</select>
+
+	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int">
+	SELECT COUNT(board_seq) 
+	FROM board 
+	WHERE type_Seq='1'
+	
+	<if test="searchType !=null and searchType == 2">
+		AND title LIKE CONCAT('%', #{searchText}, '%')
+	</if>
+	
+		<if test="searchType !=null and searchType == 3">
+		AND content LIKE CONCAT('%', #{searchText}, '%')
+	</if>
+		<if test="searchType !=null and searchType == 1">
+		AND (title LIKE CONCAT('%', #{searchText}, '%') OR content LIKE CONCAT('%',#{searchText}, '%'))
+	</if>
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+	UPDATE board set hits = hits+1 WHERE board_seq =#{0} and type_seq=#{1}
+	</update>
+
+	<select id="getBoard" parameterType="int" resultType="map">
+	SELECT * FROM board WHERE board_seq =#{0} and type_seq=#{1}
+	</select>
+	
+	<delete id="del" parameterType="int">
+	DELETE FROM board WHERE board_seq =#{0} and type_seq=#{1}
+	</delete>
+	
+	
+	<update id="upd" parameterType="map">
+	UPDATE board SET  title = #{title}, content = #{content} ,has_file= #{hasFile} ,update_date= now() 
+	WHERE board_seq =#{boardSeq} and type_seq=#{typeSeq}
+	</update>
+
+	<update id="updateHasFile" parameterType="int">
+		update board SET has_file = 0 WHERE board_seq = #{0} and type_seq = #{1}
+	</update>
+
+</mapper>

@@ -1,0 +1,6 @@
+#key = value
+#배포용
+
+
+project.context.path=/portfolio
+file.save.location = /home/ubuntu/app/upload 

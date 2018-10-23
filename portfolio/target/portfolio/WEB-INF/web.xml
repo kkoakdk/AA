@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>portfolio</display-name>
+  
+  <!-- 
+  RootAppicationContext 
+  
+  - 전체 계층구조에서 최상단에 위치한 컨텍스트
+  - 서로 다른 서블릿 컨텍스트에서 공유해야하는 Bean들을 등록해놓고 사용할 수 있다.
+  - 웹 어플리케이션 전체에 적용가능한 DB 연결, 로깅기능등에 이용
+  - Servlet Context에 등록된 Bean 이용 불가능!
+  - Servlet Context와 동일한 Bean이 있을 경우 Servlet Context Bean이 우선된다.
+  - 하나의 컨텍스트에 정의된 AOP 설정은 다른 컨텍스트의 빈에는 영향을 미치지 않는다.
+  -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath*:/applicationContext*.xml</param-value>
+  </context-param>
+  
+  <!-- Spring Servlet start -->
+  <servlet>
+  	<servlet-name>spring-web</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>spring-web</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <!-- Spring Servlet end -->
+  
+  
+  
+  <!-- 시작할때 불러오는 파일 list  -->
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+  
+  <!-- 한글데이터 깨짐 처리 -->
+	<filter>
+	  <filter-name>encodingFilter</filter-name>
+	  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	  <init-param>
+	   <param-name>encoding</param-name>
+	   <param-value>UTF-8</param-value>
+	  </init-param>
+	</filter>
+	<filter-mapping>
+	  <filter-name>encodingFilter</filter-name>
+	  <url-pattern>/*</url-pattern>
+	</filter-mapping>
+</web-app>
+
+
+
+
+
+
+

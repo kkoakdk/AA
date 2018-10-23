@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace= "com.hsc.pf.dao.MemberDao">
+	<insert id="join" parameterType="java.util.HashMap">
+	INSERT INTO member (`type_seq`,`member_id`, `member_pw`, `member_name`, `member_nick`, `email`, `birth_date`, `create_date`)
+	VALUES (1,#{id}, SHA2(MD5(#{pw}),512), #{name}, #{nick}, #{emil}, #{birth}, NOW() );
+	</insert>
+	
+	<select id="findMemberId" parameterType="String" resultType="Member">
+	SELECT * FROM member WHERE member_id = #{0}
+	</select>
+
+	<select id="makeCipherText" parameterType="String" resultType="String" >
+	SELECT SHA2(MD5(#{0}), 512)
+	</select>
+
+	<select id="checkId" parameterType="String" resultType="int">
+	SELECT count(member_id) from member WHERE member_id = #{0}
+	</select>
+
+	<select id="mList" parameterType="map" resultType="map">
+	SELECT member_idx AS memberIdx,
+	 member_id AS memberId,
+	 member_nick AS memberNick,
+	 member_name AS memberName,
+	 email,
+	 DATE_FORMAT(create_date, '%Y-%m-%d') AS createDate 
+	 FROM member
+	 ORDER BY ${sidx} ${sord}
+	 LIMIT ${start}, ${rows} 
+	</select>
+	
+
+	
+	<select id="mListCount" parameterType="map" resultType="int">
+	SELECT count(member_id) FROM member
+	</select>
+
+	<delete id="delMember" parameterType="map">
+	DELETE FROM member where member_idx = ${memberIdx}
+	</delete>
+	
+	
+
+</mapper>
